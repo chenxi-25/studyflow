@@ -1,5 +1,19 @@
 print("Welcome to StudyFlow!")
 
+modules = []
+
+number_of_modules = int(input("How many modules are you taking? "))
+
+for i in range(number_of_modules):
+    module = input(f"Enter module {i + 1}: ")
+    modules.append(module)
+
+print()
+print("Your modules:")
+
+for module in modules:
+    print("-", module)
+
 print()
 print("Your modules:")
 print("1. Algorithms")
