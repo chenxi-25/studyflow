@@ -14,11 +14,6 @@ print("Your modules:")
 for module in modules:
     print("-", module)
 
-print()
-print("Your modules:")
-print("1. Algorithms")
-print("2. Machine Learning")
-print("3. Software Engineering")
 
 print()
 print("Upcoming tasks:")
