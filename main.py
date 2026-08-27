@@ -79,13 +79,24 @@ for i in range(number_of_tasks):
 
         except ValueError:
             print("Please enter an integer.")
+
+    while True:
+        task_priority = input("Enter task priority: High, Medium or Low: ").strip().lower()
+
+        if task_priority in ["high", "medium", "low"]:
+            task_priority = task_priority.capitalize()
+            break
+
+        print("That is not a valid option. Please enter High, Medium or Low.")
+
    
 
     task = {
         "name": task_name,
         "module": task_module,
         "deadline": task_deadline,
-        "hours": task_hours
+        "hours": task_hours,
+        "priority": task_priority
     }
 
     tasks.append(task)
@@ -96,4 +107,5 @@ for task in tasks:
     print("Module:", task["module"])
     print("Deadline:", task["deadline"])
     print("Estimated hours:", task["hours"])
+    print("Priority:", task["priority"])
     print()
