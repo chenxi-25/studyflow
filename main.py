@@ -1,5 +1,30 @@
 from datetime import datetime
 
+def calculate_task_score(task):
+    deadline_date = datetime.strptime(task["deadline"], "%d/%m/%Y").date()
+
+    today = datetime.now().date()
+    
+    days_remaining = (deadline_date - today).days
+    if days_remaining <= 2:
+        time_priority_count = 5
+    elif days_remaining <= 7:
+        time_priority_count = 3
+    else:
+        time_priority_count = 1
+
+    if task["priority"] == "High":
+        priority_count = 3
+    elif task["priority"] == "Medium":
+        priority_count = 2
+    else:
+        priority_count = 1
+
+    priority_score = priority_count + time_priority_count
+
+    return priority_score
+
+
 print("Welcome to StudyFlow!")
 
 modules = []
@@ -61,11 +86,14 @@ for i in range(number_of_tasks):
     task_module = modules[choice-1]
 
     while True:
-        task_deadline = input("Enter task deadline:")
+        task_deadline = input("Enter task deadline in DD/MM/YYYY form:")
 
         try:
-            datetime.strptime(task_deadline, "%d/%m/%Y")
-            break
+            deadline_date = datetime.strptime(task_deadline, "%d/%m/%Y")
+            if deadline_date.date() >= datetime.now().date():
+                break
+            print("The deadline cannot be in the past.")
+
         except ValueError:
             print("Please enter a valid date in DD/MM/YYYY format.")
         
@@ -89,14 +117,14 @@ for i in range(number_of_tasks):
 
         print("That is not a valid option. Please enter High, Medium or Low.")
 
-   
+    print()
 
     task = {
         "name": task_name,
         "module": task_module,
         "deadline": task_deadline,
         "hours": task_hours,
-        "priority": task_priority
+        "priority": task_priority,
     }
 
     tasks.append(task)
@@ -108,4 +136,24 @@ for task in tasks:
     print("Deadline:", task["deadline"])
     print("Estimated hours:", task["hours"])
     print("Priority:", task["priority"])
+    print()
+
+#calculate each task's priority score
+for task in tasks:
+    priority_score = calculate_task_score(task)
+
+    task["score"] = priority_score
+
+#sort scores from highest to lowest
+sorted_tasks = sorted(tasks, key=lambda task: task["score"], reverse =True)
+
+#display recommended study order
+print("\nRecommended study order\n")
+
+for i, task in enumerate(sorted_tasks):
+    print(i+1, task["name"])
+    print("Module:", task["module"])
+    print("Deadline:", task["deadline"])
+    print("Priority:", task["priority"])
+    print("Estimated:", task["hours"])
     print()
